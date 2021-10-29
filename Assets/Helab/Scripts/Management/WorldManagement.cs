@@ -16,8 +16,6 @@ namespace Helab.Management
 
         public GameplayContext gameplayContext;
 
-        public ReactContext reactContext;
-
         public void OnStartConfigure()
         {
             Debug.Log("WorldManagement: OnStartConfigure");
@@ -38,7 +36,6 @@ namespace Helab.Management
         private void Awake()
         {
             LoadManagementScene.OnDidLoadManagementScene(this);
-            reactContext.entities = worldDatabase.entities;
         }
 
         private void Update()

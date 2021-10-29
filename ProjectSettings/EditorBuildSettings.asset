@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Helab/Scenes/WorldManagement.unity
+    path: Assets/Sample/Scenes/WorldManagement.unity
     guid: f106dae1a14b94d7d9ee4bce994f4807
   m_configObjects: {}

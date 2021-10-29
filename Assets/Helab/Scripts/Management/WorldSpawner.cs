@@ -24,8 +24,6 @@ namespace Helab.Management
 
         [SerializeField] private GameplayContext gameplayContext;
 
-        [SerializeField] private ReactContext reactContext;
-
         public void SpawnCamera(AbstractCamera prefab)
         {
             var appCamera = GetOrInstantiate(prefab);

@@ -18,7 +18,7 @@ namespace Helab.Management
         
         public InputSource PlayerInputSource => playerGroup.Current.inputSource;
 
-        public void Reset()
+        public void ResetContext()
         {
             userInput = null;
             gameplayCamera = null;
