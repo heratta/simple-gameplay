@@ -18,14 +18,12 @@ namespace Helab.Management
 
         public void OnStartConfigure()
         {
-            Debug.Log("WorldManagement: OnStartConfigure");
             worldSweeper.Cleanup();
             worldUpdater.isEnabledUpdate = false;
         }
 
         public void OnDidCompleteConfigure()
         {
-            Debug.Log("WorldManagement: OnDidCompleteConfigure");
             worldUpdater.isEnabledUpdate = true;
             foreach (var widget in worldDatabase.widgets)
             {
