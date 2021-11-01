@@ -39,7 +39,7 @@ namespace Helab.Configure
             
 #if UNITY_EDITOR
             yield return null;
-            _management.worldRoot.DumpChildCount();
+            _management.worldDatabase.worldRoot.DumpChildCount();
 #endif
             
             foreach (var make in makes)

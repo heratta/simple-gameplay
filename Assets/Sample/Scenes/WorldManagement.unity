@@ -198,8 +198,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabledUpdate: 0
   worldDatabase: {fileID: 2101590792}
-  worldSpawner: {fileID: 474150993}
-  worldSweeper: {fileID: 474150992}
 --- !u!1 &222132654
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8077e73c53714f3d9e6629dddccd5c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldRoot: {fileID: 2101590793}
   worldDatabase: {fileID: 2101590792}
   worldSweeper: {fileID: 474150992}
   poolVault: {fileID: 1065668572}
@@ -358,7 +355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c928b7a8af314824a65d1ff8e48daa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldRoot: {fileID: 2101590793}
   worldDatabase: {fileID: 2101590792}
   worldSpawner: {fileID: 474150993}
   worldSweeper: {fileID: 474150992}
@@ -790,6 +786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd9769b86bb54d94ab5436f77d41ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldRoot: {fileID: 2101590793}
   cameraGroup: {fileID: 2101590791}
   lights: []
   userInputs: []

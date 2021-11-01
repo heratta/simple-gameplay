@@ -12,6 +12,8 @@ namespace Helab.Management
 {
     public class WorldDatabase : MonoBehaviour
     {
+        public WorldRoot worldRoot;
+
         public CameraGroup cameraGroup;
         
         public List<Light> lights;
@@ -26,7 +28,7 @@ namespace Helab.Management
         
         public PlayerGroup playerGroup;
 
-        public void AddComponent(WorldRoot worldRoot, Component component)
+        public void AddComponent(Component component)
         {
             switch (component)
             {

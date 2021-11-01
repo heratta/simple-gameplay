@@ -45,14 +45,6 @@ namespace Helab.Management
             Displace.Do(_persistentInstances, go.GetInstanceID(), _instances);
         }
 
-        public void DestroyOrRelease(GameObject go)
-        {
-            var key = go.GetInstanceID();
-            var instance = _instances[key];
-            DestroyOrRelease(instance);
-            _instances.Remove(key);
-        }
-
         public void Cleanup()
         {
             foreach (var kvp in _instances)
@@ -61,6 +53,34 @@ namespace Helab.Management
             }
             
             _instances.Clear();
+        }
+
+        public void RemoveEntityFromWorld(List<AbstractEntity> deadEntities)
+        {
+            foreach (var entity in deadEntities)
+            {
+                if (entity.view.viewBody != null)
+                {
+                    DestroyOrRelease(entity.view.viewBody);
+                }
+
+                if (entity.view.viewAnimation != null)
+                {
+                    DestroyOrRelease(entity.view.viewAnimation.gameObject);
+                }
+
+                DestroyOrRelease(entity.gameObject);
+            }
+            
+            deadEntities.Clear();
+        }
+
+        private void DestroyOrRelease(GameObject go)
+        {
+            var key = go.GetInstanceID();
+            var instance = _instances[key];
+            DestroyOrRelease(instance);
+            _instances.Remove(key);
         }
 
         private void DestroyOrRelease(WorldInstance instance)

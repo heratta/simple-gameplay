@@ -4,8 +4,6 @@ namespace Helab.Management
 {
     public class WorldManagement : MonoBehaviour
     {
-        public WorldRoot worldRoot;
-
         public WorldDatabase worldDatabase;
 
         public WorldSpawner worldSpawner;
@@ -39,6 +37,10 @@ namespace Helab.Management
         private void Update()
         {
             worldUpdater.ManagedUpdate();
+            if (0 < worldUpdater.DeadEntities.Count)
+            {
+                worldSweeper.RemoveEntityFromWorld(worldUpdater.DeadEntities);
+            }
         }
     }
 }

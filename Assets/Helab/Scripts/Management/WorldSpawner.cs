@@ -12,8 +12,6 @@ namespace Helab.Management
 {
     public class WorldSpawner : MonoBehaviour
     {
-        [SerializeField] private WorldRoot worldRoot;
-        
         [SerializeField] private WorldDatabase worldDatabase;
         
         [SerializeField] private WorldSweeper worldSweeper;
@@ -27,32 +25,32 @@ namespace Helab.Management
         public void SpawnCamera(AbstractCamera prefab)
         {
             var appCamera = GetOrInstantiate(prefab);
-            worldDatabase.AddComponent(worldRoot, appCamera);
+            worldDatabase.AddComponent(appCamera);
         }
         
         public void SpawnLight(Light prefab)
         {
             var unityLight = GetOrInstantiate(prefab);
-            worldDatabase.AddComponent(worldRoot, unityLight);
+            worldDatabase.AddComponent(unityLight);
         }
         
         public void SpawnUserInput(UserInput prefab)
         {
             var input = GetOrInstantiate(prefab);
-            worldDatabase.AddComponent(worldRoot, input);
+            worldDatabase.AddComponent(input);
         }
         
         public void SpawnController(AbstractController prefab)
         {
             var controller = GetOrInstantiate(prefab);
             controller.gameplayContext = gameplayContext;
-            worldDatabase.AddComponent(worldRoot, controller);
+            worldDatabase.AddComponent(controller);
         }
 
         public void SpawnWidget(AbstractWidget prefab)
         {
             var canvas = GetOrInstantiate(prefab);
-            worldDatabase.AddComponent(worldRoot, canvas);
+            worldDatabase.AddComponent(canvas);
         }
         
         public StageEntity SpawnStage(StageEntity entityPrefab, GameObject viewBodyPrefab)
@@ -60,7 +58,7 @@ namespace Helab.Management
             var entity = GetOrInstantiate(entityPrefab);
             entity.view.viewBody = GetOrInstantiate(viewBodyPrefab);
             entity.SetupStage();
-            worldDatabase.AddComponent(worldRoot, entity);
+            worldDatabase.AddComponent(entity);
             return entity;
         }
 
@@ -77,7 +75,7 @@ namespace Helab.Management
             entity.view.viewAnimation = instruction.PrefabSet.viewAnimation != null ?
                 GetOrBorrow(instruction.PrefabSet.viewAnimation, 10) : null;
             entity.SetupCharacter(instruction);
-            worldDatabase.AddComponent(worldRoot, entity);
+            worldDatabase.AddComponent(entity);
             entity.transform.position = instruction.Position;
             return entity;
         }
