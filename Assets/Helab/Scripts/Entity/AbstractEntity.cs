@@ -33,7 +33,7 @@ namespace Helab.Entity
 
         protected void SetupEntity()
         {
-            view.SetupView();
+            view.SetupView(environs);
         }
 
         protected void Kill()

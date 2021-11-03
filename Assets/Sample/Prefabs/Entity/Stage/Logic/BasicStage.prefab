@@ -158,4 +158,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewBody: {fileID: 0}
   viewAnimation: {fileID: 0}
-  environs: {fileID: 0}

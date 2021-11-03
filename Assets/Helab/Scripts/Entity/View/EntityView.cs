@@ -9,8 +9,6 @@ namespace Helab.Entity.View
         public GameObject viewBody;
         
         public EntityAnimation viewAnimation;
-        
-        [SerializeField] private EntityEnvirons environs;
 
         public void ResetView()
         {
@@ -22,7 +20,7 @@ namespace Helab.Entity.View
             }
         }
         
-        public void SetupView()
+        public void SetupView(EntityEnvirons environs)
         {
             if (viewBody != null)
             {
