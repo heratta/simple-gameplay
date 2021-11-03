@@ -8,7 +8,7 @@ namespace Helab.Configure.Task
     {
         public bool IsCompleted { get; private set; }
 
-        public WorldSpawner worldSpawner;
+        public WorldSpawner WorldSpawner { get; set; }
 
         public void StartTask()
         {

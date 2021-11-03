@@ -11,11 +11,11 @@ namespace Helab.Configure
     {
         [SerializeField] private List<Make> makes;
         
-        private WorldManagement _management;
+        private WorldManagement _worldManagement;
         
-        public void OnDidLoadManagementScene(WorldManagement management)
+        public void OnDidLoadManagementScene(WorldManagement worldManagement)
         {
-            _management = management;
+            _worldManagement = worldManagement;
         }
 
         private void Awake()
@@ -33,25 +33,24 @@ namespace Helab.Configure
 
         private IEnumerator MakeWorld()
         {
-            yield return new WaitUntil(() => _management != null);
+            yield return new WaitUntil(() => _worldManagement != null);
 
-            _management.OnStartConfigure();
+            _worldManagement.OnStartConfigure();
             
 #if UNITY_EDITOR
             yield return null;
-            _management.worldDatabase.worldRoot.DumpChildCount();
+            _worldManagement.worldDatabase.worldRoot.DumpChildCount();
 #endif
             
             foreach (var make in makes)
             {
-                make.worldSpawner = _management.worldSpawner;
-                make.StartMake();
+                make.StartMake(_worldManagement.worldSpawner);
             }
 
             yield return new WaitUntil(IsCompletedMake);
             
-            OnDidCompleteConfigure(_management);
-            _management.OnDidCompleteConfigure();
+            OnDidCompleteConfigure(_worldManagement);
+            _worldManagement.OnDidCompleteConfigure();
             
             gameObject.SetActive(false);
         }
@@ -61,7 +60,7 @@ namespace Helab.Configure
             return makes.All(make => make.IsCompleted);
         }
 
-        protected virtual void OnDidCompleteConfigure(WorldManagement management)
+        protected virtual void OnDidCompleteConfigure(WorldManagement worldManagement)
         {
             
         }

@@ -10,7 +10,7 @@ namespace Helab.Configure.Task
         
         protected override IEnumerator Execute()
         {
-            worldSpawner.SpawnWidget(prefab);
+            WorldSpawner.SpawnWidget(prefab);
             yield return null;
         }
     }

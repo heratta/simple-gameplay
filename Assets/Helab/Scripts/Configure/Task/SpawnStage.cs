@@ -12,7 +12,7 @@ namespace Helab.Configure.Task
         
         protected override IEnumerator Execute()
         {
-            var entity = worldSpawner.SpawnStage(entityPrefab, viewBodyPrefab);
+            var entity = WorldSpawner.SpawnStage(entityPrefab, viewBodyPrefab);
             entity.name = name;
             yield return null;
         }

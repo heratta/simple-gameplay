@@ -10,7 +10,7 @@ namespace Helab.Configure.Task
         
         protected override IEnumerator Execute()
         {
-            worldSpawner.SpawnCamera(prefab);
+            WorldSpawner.SpawnCamera(prefab);
             yield return null;
         }
     }

@@ -7,13 +7,13 @@ namespace Helab.Management
     {
         private static bool _didLoadScene;
 
-        private static WorldManagement _management;
+        private static WorldManagement _worldManagement;
 
         private bool _isEnabledUpdate = true;
 
-        public static void OnDidLoadManagementScene(WorldManagement management)
+        public static void OnDidLoadManagementScene(WorldManagement worldManagement)
         {
-            _management = management;
+            _worldManagement = worldManagement;
         }
         
         private void Start()
@@ -27,7 +27,7 @@ namespace Helab.Management
 
         private void Update()
         {
-            if (_management == null || !_isEnabledUpdate)
+            if (_worldManagement == null || !_isEnabledUpdate)
             {
                 return;
             }
@@ -37,7 +37,7 @@ namespace Helab.Management
             {
                 if (c is ILoadManagementScene i)
                 {
-                    i.OnDidLoadManagementScene(_management);
+                    i.OnDidLoadManagementScene(_worldManagement);
                 }
             }
             

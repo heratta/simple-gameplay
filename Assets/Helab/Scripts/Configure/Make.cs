@@ -12,12 +12,10 @@ namespace Helab.Configure
         [SerializeField] private List<AbstractTask> tasks;
         
         public bool IsCompleted { get; private set; }
-
-        public WorldSpawner worldSpawner;
         
-        public void StartMake()
+        public void StartMake(WorldSpawner worldSpawner)
         {
-            StartCoroutine(RunMake());
+            StartCoroutine(RunMake(worldSpawner));
         }
 
         private void Awake()
@@ -28,11 +26,11 @@ namespace Helab.Configure
             }
         }
 
-        private IEnumerator RunMake()
+        private IEnumerator RunMake(WorldSpawner worldSpawner)
         {
             foreach (var task in tasks)
             {
-                task.worldSpawner = worldSpawner;
+                task.WorldSpawner = worldSpawner;
                 task.StartTask();
             }
             
