@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,11 +6,9 @@ namespace Helab.Management
 {
     public class LoadManagementScene : MonoBehaviour
     {
-        private static bool _didLoadScene;
+        private static bool _didStartLoadScene;
 
         private static WorldManagement _worldManagement;
-
-        private bool _isEnabledUpdate = true;
 
         public static void OnDidLoadManagementScene(WorldManagement worldManagement)
         {
@@ -18,30 +17,29 @@ namespace Helab.Management
         
         private void Start()
         {
-            if (!_didLoadScene)
+            if (!_didStartLoadScene)
             {
                 SceneManager.LoadScene("WorldManagement", LoadSceneMode.Additive);
-                _didLoadScene = true;
+                _didStartLoadScene = true;
             }
+            
+            StartCoroutine(WaitLoadManagementScene());
         }
 
-        private void Update()
+        private IEnumerator WaitLoadManagementScene()
         {
-            if (_worldManagement == null || !_isEnabledUpdate)
-            {
-                return;
-            }
+            yield return new WaitUntil(() => _worldManagement != null);
             
-            var components = GetComponents<MonoBehaviour>();
-            foreach (var c in components)
+            InvokeOnDidLoadManagementScene();
+        }
+
+        private void InvokeOnDidLoadManagementScene()
+        {
+            var behaviours = GetComponents<MonoBehaviour>();
+            foreach (var behaviour in behaviours)
             {
-                if (c is ILoadManagementScene i)
-                {
-                    i.OnDidLoadManagementScene(_worldManagement);
-                }
+                (behaviour as ILoadManagementScene)?.OnDidLoadManagementScene(_worldManagement);
             }
-            
-            _isEnabledUpdate = false;
         }
     }
 }
