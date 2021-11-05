@@ -49,8 +49,8 @@ namespace Helab.Management
 
         public void SpawnWidget(AbstractWidget prefab)
         {
-            var canvas = GetOrInstantiate(prefab);
-            worldDatabase.AddComponent(canvas);
+            var widget = GetOrInstantiate(prefab);
+            worldDatabase.AddComponent(widget);
         }
         
         public StageEntity SpawnStage(StageEntity entityPrefab, GameObject viewBodyPrefab)
