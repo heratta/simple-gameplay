@@ -1,3 +1,4 @@
+using Helab.Management.Context;
 using UnityEngine;
 
 namespace Helab.Management
@@ -8,25 +9,29 @@ namespace Helab.Management
 
         public WorldSpawner worldSpawner;
         
+        public WorldProvisioner worldProvisioner;
+        
         public WorldSweeper worldSweeper;
 
         public WorldUpdater worldUpdater;
 
         public GameplayContext gameplayContext;
 
+        public void CleanupInWorld()
+        {
+            worldSweeper.PickupAll();
+        }
+
         public void OnStartConfigure()
         {
-            worldSweeper.Cleanup();
+            worldProvisioner.isEnabledUpdate = false;
             worldUpdater.isEnabledUpdate = false;
         }
 
         public void OnDidCompleteConfigure()
         {
+            worldProvisioner.isEnabledUpdate = true;
             worldUpdater.isEnabledUpdate = true;
-            foreach (var widget in worldDatabase.widgets)
-            {
-                widget.ConfigureCamera(worldDatabase.cameraGroup);
-            }
         }
         
         private void Awake()
@@ -36,11 +41,10 @@ namespace Helab.Management
 
         private void Update()
         {
-            worldUpdater.ManagedUpdate();
-            if (0 < worldUpdater.DeadEntities.Count)
-            {
-                worldSweeper.RemoveEntityFromWorld(worldUpdater.DeadEntities);
-            }
+            worldSweeper.ManagedUpdate(worldDatabase);
+            worldSpawner.ManagedUpdate(worldSweeper, worldProvisioner);
+            worldProvisioner.ManagedUpdate(this);
+            worldUpdater.ManagedUpdate(worldDatabase, worldSweeper);
         }
     }
 }

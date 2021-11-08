@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Helab.Camera;
 using UnityEngine;
 
-namespace Helab.Management
+namespace Helab.Management.Group
 {
     public class CameraGroup : MonoBehaviour
     {

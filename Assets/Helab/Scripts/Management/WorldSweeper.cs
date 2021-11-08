@@ -1,27 +1,51 @@
 using System.Collections.Generic;
-using Helab.Entity;
 using Helab.Helper;
+using Helab.ObjectPool;
 using UnityEngine;
 
 namespace Helab.Management
 {
     public class WorldSweeper : MonoBehaviour
     {
-        [SerializeField] private WorldDatabase worldDatabase;
+        public int InstanceCount => _instances.Count;
         
         private readonly Dictionary<int, WorldInstance> _instances = new Dictionary<int, WorldInstance>();
         
-        private readonly Dictionary<int, WorldInstance> _persistentInstances = new Dictionary<int, WorldInstance>();
+        private readonly Dictionary<int, WorldInstance> _instancesInKeep = new Dictionary<int, WorldInstance>();
+
+        private readonly Queue<WorldInstance> _instancesInPickup = new Queue<WorldInstance>();
 
         public void AddInstance(WorldInstance instance, bool isPersistent)
         {
             if (isPersistent)
             {
-                _persistentInstances.Add(instance.Key, instance);
+                _instancesInKeep.Add(instance.Key, instance);
             }
             else
             {
                 _instances.Add(instance.Key, instance);
+            }
+        }
+
+        public void Pickup(Component component)
+        {
+            Pickup(component.gameObject);
+        }
+
+        public void Pickup(GameObject go)
+        {
+            var key = go.GetInstanceID();
+            if (_instances.TryGetValue(key, out var instance))
+            {
+                _instancesInPickup.Enqueue(instance);
+            }
+        }
+
+        public void PickupAll()
+        {
+            foreach (var kvp in _instances)
+            {
+                Pickup(kvp.Value.GameObject);
             }
         }
 
@@ -32,7 +56,7 @@ namespace Helab.Management
 
         public void SetPersistentInstance(GameObject go)
         {
-            Displace.Do(_instances, go.GetInstanceID(), _persistentInstances);
+            Displace.Do(go.GetInstanceID(), _instances, _instancesInKeep);
         }
 
         public void SetNormalInstance(Component component)
@@ -42,63 +66,38 @@ namespace Helab.Management
 
         public void SetNormalInstance(GameObject go)
         {
-            Displace.Do(_persistentInstances, go.GetInstanceID(), _instances);
+            Displace.Do(go.GetInstanceID(), _instancesInKeep, _instances);
         }
 
-        public void Cleanup()
+        public void ManagedUpdate(WorldDatabase worldDatabase)
         {
-            foreach (var kvp in _instances)
+            while (0 < _instancesInPickup.Count)
             {
-                DestroyOrRelease(kvp.Value);
-            }
-            
-            _instances.Clear();
-        }
-
-        public void RemoveEntityFromWorld(List<AbstractEntity> deadEntities)
-        {
-            foreach (var entity in deadEntities)
-            {
-                if (entity.view.viewBody != null)
+                var instance = _instancesInPickup.Dequeue();
+                if (!_instances.ContainsKey(instance.Key))
                 {
-                    DestroyOrRelease(entity.view.viewBody);
+                    continue;
                 }
 
-                if (entity.view.viewAnimation != null)
+                if (instance.Component != null)
                 {
-                    DestroyOrRelease(entity.view.viewAnimation.gameObject);
-                }
-
-                DestroyOrRelease(entity.gameObject);
-            }
-            
-            deadEntities.Clear();
-        }
-
-        private void DestroyOrRelease(GameObject go)
-        {
-            var key = go.GetInstanceID();
-            var instance = _instances[key];
-            DestroyOrRelease(instance);
-            _instances.Remove(key);
-        }
-
-        private void DestroyOrRelease(WorldInstance instance)
-        {
-            worldDatabase.RemoveComponent(instance.Component);
-            
-            if (instance.Pool != null)
-            {
-                if (instance.Component is AbstractEntity entity)
-                {
-                    entity.ResetEntity();
+                    worldDatabase.RemoveComponent(instance.Component);
                 }
                 
-                instance.Pool.ReleaseObject(instance.GameObject);
-            }
-            else
-            {
-                Destroy(instance.GameObject);
+                if (instance.Pool != null)
+                {
+                    if (instance.Component is IPooledObject pooled)
+                    {
+                        pooled.ResetInternalState();
+                    }
+                    instance.Pool.ReleaseObject(instance.GameObject);
+                }
+                else
+                {
+                    Destroy(instance.GameObject);
+                }
+            
+                _instances.Remove(instance.Key);
             }
         }
     }

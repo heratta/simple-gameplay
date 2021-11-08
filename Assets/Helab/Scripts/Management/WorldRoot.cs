@@ -64,7 +64,15 @@ namespace Helab.Management
             var log = "";
             foreach (Transform child in transform)
             {
-                log += $"{child.name}: childCount={child.transform.childCount}\n";
+                if (0 < child.transform.childCount)
+                {
+                    log += $"{child.name}: childCount={child.transform.childCount}\n";
+                }
+            }
+
+            if (string.IsNullOrEmpty(log))
+            {
+                log = "WorldRoot is empty.";
             }
 
             Debug.Log(log);

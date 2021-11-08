@@ -1,11 +1,12 @@
 using Helab.Entity.Environs;
 using Helab.Entity.Logic;
 using Helab.Entity.View;
+using Helab.ObjectPool;
 using UnityEngine;
 
 namespace Helab.Entity
 {
-    public abstract class AbstractEntity : MonoBehaviour
+    public abstract class AbstractEntity : MonoBehaviour, IPooledObject
     {
         public EntityView view;
 
@@ -15,12 +16,9 @@ namespace Helab.Entity
         
         [SerializeField] private EntityLogic logic;
 
-        public virtual void ResetEntity()
+        public void ResetInternalState()
         {
-            basicParam.ResetParam();
-            environs.ResetEnvirons();
-            logic.ResetLogic();
-            view.ResetView();
+            ResetEntity();
         }
         
         public void ManagedUpdate()
@@ -31,9 +29,17 @@ namespace Helab.Entity
             UpdateEntity();
         }
 
-        protected void SetupEntity()
+        public virtual void SetupEntity()
         {
             view.SetupView(environs);
+        }
+
+        protected virtual void ResetEntity()
+        {
+            basicParam.ResetParam();
+            environs.ResetEnvirons();
+            logic.ResetLogic();
+            view.ResetView();
         }
 
         protected void Kill()

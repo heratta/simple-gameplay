@@ -10,5 +10,11 @@ namespace Helab.Entity.Character
         {
             physicalBody = null;
         }
+
+        public void SetPhysicalBody(CharacterPhysicalBody physicalBody)
+        {
+            this.physicalBody = physicalBody;
+            this.physicalBody.transform.SetParent(transform, false);
+        }
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Helab.Entity;
 using UnityEngine;
 
 namespace Helab.Management
@@ -8,21 +6,17 @@ namespace Helab.Management
     {
         public bool isEnabledUpdate;
 
-        public readonly List<AbstractEntity> DeadEntities = new List<AbstractEntity>();
-
-        [SerializeField] private WorldDatabase worldDatabase;
-
-        public void ManagedUpdate()
+        public void ManagedUpdate(WorldDatabase worldDatabase, WorldSweeper worldSweeper)
         {
             if (!isEnabledUpdate)
             {
                 return;
             }
 
-            UpdateWorld();
+            UpdateWorld(worldDatabase, worldSweeper);
         }
 
-        private void UpdateWorld()
+        private void UpdateWorld(WorldDatabase worldDatabase, WorldSweeper worldSweeper)
         {
             foreach (var controller in worldDatabase.controllers)
             {
@@ -34,13 +28,21 @@ namespace Helab.Management
                 appCamera.ManagedUpdate();
             }
 
-            foreach (var entity in worldDatabase.entities)
+            foreach (var entity in worldDatabase.entityGroup.entities)
             {
                 entity.ManagedUpdate();
                 
                 if (entity.basicParam.isDead)
                 {
-                    DeadEntities.Add(entity);
+                    if (entity.view.viewBody != null)
+                    {
+                        worldSweeper.Pickup(entity.view.viewBody);
+                    }
+                    if (entity.view.viewAnimation != null)
+                    {
+                        worldSweeper.Pickup(entity.view.viewAnimation);
+                    }
+                    worldSweeper.Pickup(entity);
                 }
             }
         }

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Helab.Camera;
 using Helab.Controller;
-using Helab.Entity;
 using Helab.Entity.Character;
 using Helab.Entity.Stage;
 using Helab.Input;
+using Helab.Management.Group;
 using Helab.UI;
 using UnityEngine;
 
@@ -13,8 +13,6 @@ namespace Helab.Management
     public class WorldDatabase : MonoBehaviour
     {
         public WorldRoot worldRoot;
-
-        public CameraGroup cameraGroup;
         
         public List<Light> lights;
         
@@ -23,8 +21,10 @@ namespace Helab.Management
         public List<AbstractController> controllers;
         
         public List<AbstractWidget> widgets;
+
+        public CameraGroup cameraGroup;
         
-        public List<AbstractEntity> entities;
+        public EntityGroup entityGroup;
         
         public PlayerGroup playerGroup;
 
@@ -54,11 +54,11 @@ namespace Helab.Management
                 break;
             case StageEntity c:
                 worldRoot.DeployToStageRoot(c.gameObject);
-                entities.Add(c);
+                entityGroup.entities.Add(c);
                 break;
             case CharacterEntity c:
                 worldRoot.DeployToCharacterRoot(c.gameObject);
-                entities.Add(c);
+                entityGroup.entities.Add(c);
                 if (c.IsPlayable)
                 {
                     playerGroup.AddPlayer(c);
@@ -87,10 +87,10 @@ namespace Helab.Management
                 widgets.Remove(c);
                 break;
             case StageEntity c:
-                entities.Remove(c);
+                entityGroup.entities.Remove(c);
                 break;
             case CharacterEntity c:
-                entities.Remove(c);
+                entityGroup.entities.Remove(c);
                 if (c.IsPlayable)
                 {
                     playerGroup.RemovePlayer(c);

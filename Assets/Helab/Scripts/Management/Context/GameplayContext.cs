@@ -1,8 +1,9 @@
 using Helab.Camera;
 using Helab.Input;
+using Helab.Management.Group;
 using UnityEngine;
 
-namespace Helab.Management
+namespace Helab.Management.Context
 {
     public class GameplayContext : MonoBehaviour
     {

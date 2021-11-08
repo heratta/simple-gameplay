@@ -19,17 +19,23 @@ namespace Helab.Entity.View
                 viewAnimation = null;
             }
         }
+
+        public void SetViewBody(GameObject viewBody)
+        {
+            this.viewBody = viewBody;
+            this.viewBody.transform.SetParent(transform, false);
+        }
+
+        public void SetViewAnimation(EntityAnimation viewAnimation)
+        {
+            this.viewAnimation = viewAnimation;
+            this.viewAnimation.transform.SetParent(transform, false);
+        }
         
         public void SetupView(EntityEnvirons environs)
         {
-            if (viewBody != null)
-            {
-                viewBody.transform.SetParent(transform, false);
-            }
-
             if (viewAnimation != null)
             {
-                viewAnimation.transform.SetParent(transform, false);
                 viewAnimation.environs = environs;
                 if (viewBody != null)
                 {

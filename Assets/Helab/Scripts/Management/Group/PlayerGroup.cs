@@ -3,7 +3,7 @@ using Helab.Entity.Character;
 using Helab.Helper;
 using UnityEngine;
 
-namespace Helab.Management
+namespace Helab.Management.Group
 {
     public class PlayerGroup : MonoBehaviour
     {

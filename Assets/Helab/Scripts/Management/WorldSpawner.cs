@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Helab.Camera;
 using Helab.Controller;
 using Helab.Entity.Character;
@@ -12,57 +13,55 @@ namespace Helab.Management
 {
     public class WorldSpawner : MonoBehaviour
     {
-        [SerializeField] private WorldDatabase worldDatabase;
-        
-        [SerializeField] private WorldSweeper worldSweeper;
-        
         [SerializeField] private PoolVault poolVault;
         
         [SerializeField] private ResourceVault resourceVault;
 
-        [SerializeField] private GameplayContext gameplayContext;
+        private readonly Queue<WorldInstance> _instances = new Queue<WorldInstance>();
+        
+        public void ManagedUpdate(WorldSweeper worldSweeper, WorldProvisioner worldProvisioner)
+        {
+            while (0 < _instances.Count)
+            {
+                var instance = _instances.Dequeue();
+                worldSweeper.AddInstance(instance, false);
+                worldProvisioner.AddComponent(instance.Component);
+            }
+        }
 
         public void SpawnCamera(AbstractCamera prefab)
         {
-            var appCamera = GetOrInstantiate(prefab);
-            worldDatabase.AddComponent(appCamera);
+            GetOrInstantiate(prefab);
         }
         
         public void SpawnLight(Light prefab)
         {
-            var unityLight = GetOrInstantiate(prefab);
-            worldDatabase.AddComponent(unityLight);
+            GetOrInstantiate(prefab);
         }
         
         public void SpawnUserInput(UserInput prefab)
         {
-            var input = GetOrInstantiate(prefab);
-            worldDatabase.AddComponent(input);
+            GetOrInstantiate(prefab);
         }
         
         public void SpawnController(AbstractController prefab)
         {
-            var controller = GetOrInstantiate(prefab);
-            controller.gameplayContext = gameplayContext;
-            worldDatabase.AddComponent(controller);
+            GetOrInstantiate(prefab);
         }
 
         public void SpawnWidget(AbstractWidget prefab)
         {
-            var widget = GetOrInstantiate(prefab);
-            worldDatabase.AddComponent(widget);
+            GetOrInstantiate(prefab);
         }
         
-        public StageEntity SpawnStage(StageEntity entityPrefab, GameObject viewBodyPrefab)
+        public void SpawnStage(StageEntity entityPrefab, GameObject viewBodyPrefab, string entityName)
         {
             var entity = GetOrInstantiate(entityPrefab);
-            entity.view.viewBody = GetOrInstantiate(viewBodyPrefab);
-            entity.SetupStage();
-            worldDatabase.AddComponent(entity);
-            return entity;
+            entity.view.SetViewBody(GetOrInstantiate(viewBodyPrefab));
+            entity.name = entityName;
         }
 
-        public CharacterEntity SpawnCharacter(CharacterInstruction instruction)
+        public void SpawnCharacter(CharacterInstruction instruction)
         {
             if (!instruction.PrefabSet.IsValid)
             {
@@ -70,24 +69,34 @@ namespace Helab.Management
             }
             
             var entity = GetOrBorrow(instruction.PrefabSet.entity, 10);
-            entity.reference.physicalBody = GetOrBorrow(instruction.PrefabSet.physicalBody, 10);
-            entity.view.viewBody = GetOrBorrow(instruction.PrefabSet.viewBody, 10);
-            entity.view.viewAnimation = instruction.PrefabSet.viewAnimation != null ?
-                GetOrBorrow(instruction.PrefabSet.viewAnimation, 10) : null;
-            entity.SetupCharacter(instruction);
-            worldDatabase.AddComponent(entity);
+            entity.reference.SetPhysicalBody(GetOrBorrow(instruction.PrefabSet.physicalBody, 10));
+            entity.view.SetViewBody(GetOrBorrow(instruction.PrefabSet.viewBody, 10));
+            if (instruction.PrefabSet.viewAnimation != null)
+            {
+                entity.view.SetViewAnimation(GetOrBorrow(instruction.PrefabSet.viewAnimation, 10));
+            }
+            entity.IsPlayable = instruction.IsPlayable;
+            if (!string.IsNullOrEmpty(instruction.Name))
+            {
+                entity.name = instruction.Name;
+            }
             entity.transform.position = instruction.Position;
-            return entity;
         }
 
         private WorldInstance GetOrInstantiateInstance(GameObject prefab)
         {
-            var instance = new WorldInstance
+            var instance = new WorldInstance();
+            if (prefab.activeInHierarchy)
             {
-                GameObject = prefab.activeInHierarchy ? prefab : Instantiate(prefab)
-            };
+                instance.GameObject = prefab;
+                instance.GameObject.transform.SetParent(null, false);
+            }
+            else
+            {
+                instance.GameObject = Instantiate(prefab);
+            }
 
-            worldSweeper.AddInstance(instance, false);
+            _instances.Enqueue(instance);
             return instance;
         }
 
@@ -111,6 +120,7 @@ namespace Helab.Management
             if (prefab.activeInHierarchy)
             {
                 instance.GameObject = prefab;
+                instance.GameObject.transform.SetParent(null, false);
             }
             else
             {
@@ -119,7 +129,7 @@ namespace Helab.Management
                 instance.Pool = pool;
             }
             
-            worldSweeper.AddInstance(instance, false);
+            _instances.Enqueue(instance);
             return instance;
         }
 

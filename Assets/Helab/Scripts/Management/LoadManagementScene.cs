@@ -38,7 +38,7 @@ namespace Helab.Management
             var behaviours = GetComponents<MonoBehaviour>();
             foreach (var behaviour in behaviours)
             {
-                (behaviour as ILoadManagementScene)?.OnDidLoadManagementScene(_worldManagement);
+                (behaviour as ILoadSceneHandler)?.OnDidLoadScene(_worldManagement);
             }
         }
     }

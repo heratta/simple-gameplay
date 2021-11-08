@@ -197,7 +197,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEnabledUpdate: 0
-  worldDatabase: {fileID: 2101590792}
 --- !u!1 &222132654
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 474150991}
   - component: {fileID: 474150993}
+  - component: {fileID: 474150994}
   - component: {fileID: 474150992}
   m_Layer: 0
   m_Name: Construction
@@ -286,7 +286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce51f6b73e804727922da9c8181765c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldDatabase: {fileID: 2101590792}
 --- !u!114 &474150993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,10 +298,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8077e73c53714f3d9e6629dddccd5c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldDatabase: {fileID: 2101590792}
-  worldSweeper: {fileID: 474150992}
   poolVault: {fileID: 1065668572}
   resourceVault: {fileID: 222132656}
+--- !u!114 &474150994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474150990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36a6bcdec72e45c9b6158ecbb5a5dc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnabledUpdate: 0
+  worldSpawner: {fileID: 474150993}
+  cameraGroup: {fileID: 2101590791}
   gameplayContext: {fileID: 1050273287}
 --- !u!1 &524444185
 GameObject:
@@ -357,6 +369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldDatabase: {fileID: 2101590792}
   worldSpawner: {fileID: 474150993}
+  worldProvisioner: {fileID: 474150994}
   worldSweeper: {fileID: 474150992}
   worldUpdater: {fileID: 180744588}
   gameplayContext: {fileID: 1050273287}
@@ -719,6 +732,7 @@ GameObject:
   - component: {fileID: 2101590793}
   - component: {fileID: 2101590792}
   - component: {fileID: 2101590791}
+  - component: {fileID: 2101590794}
   - component: {fileID: 2101590790}
   m_Layer: 0
   m_Name: WorldRoot
@@ -787,12 +801,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldRoot: {fileID: 2101590793}
-  cameraGroup: {fileID: 2101590791}
   lights: []
   userInputs: []
   controllers: []
   widgets: []
-  entities: []
+  cameraGroup: {fileID: 2101590791}
+  entityGroup: {fileID: 2101590794}
   playerGroup: {fileID: 2101590790}
 --- !u!114 &2101590793
 MonoBehaviour:
@@ -813,3 +827,16 @@ MonoBehaviour:
   uiRoot: {fileID: 1842526358}
   stageRoot: {fileID: 1553366491}
   characterRoot: {fileID: 87885269}
+--- !u!114 &2101590794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101590788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af262b81e4e40411d9516a4bc5f84735, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entities: []

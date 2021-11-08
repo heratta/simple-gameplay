@@ -7,13 +7,13 @@ using UnityEngine;
 namespace Helab.Configure
 {
     [RequireComponent(typeof(LoadManagementScene))]
-    public class WorldConfigure : MonoBehaviour, ILoadManagementScene
+    public class WorldConfigure : MonoBehaviour, ILoadSceneHandler
     {
         [SerializeField] private List<Make> makes;
         
         private WorldManagement _worldManagement;
         
-        public void OnDidLoadManagementScene(WorldManagement worldManagement)
+        public void OnDidLoadScene(WorldManagement worldManagement)
         {
             _worldManagement = worldManagement;
         }

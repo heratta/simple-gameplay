@@ -8,27 +8,22 @@ namespace Helab.Entity.Character
         public CharacterReference reference;
 
         public InputSource inputSource;
-        
-        public bool IsPlayable { get; private set; }
+
+        public bool IsPlayable { get; set; }
         
         [SerializeField] private CharacterController characterController;
 
-        public override void ResetEntity()
+        protected override void ResetEntity()
         {
             base.ResetEntity();
             reference.ResetReference();
         }
 
-        public void SetupCharacter(CharacterInstruction instruction)
+        public override void SetupEntity()
         {
-            if (!string.IsNullOrEmpty(instruction.Name))
-            {
-                name = instruction.Name;
-            }
-            IsPlayable = instruction.IsPlayable;
-            reference.physicalBody.SetupPhysicalBody(reference.transform, characterController);
-
-            SetupEntity();
+            base.SetupEntity();
+            
+            reference.physicalBody.SetupPhysicalBody(characterController);
         }
 
         protected override void UpdateEntity()

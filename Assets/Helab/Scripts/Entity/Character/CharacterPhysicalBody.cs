@@ -12,10 +12,8 @@ namespace Helab.Entity.Character
         
         public Transform shot;
 
-        public void SetupPhysicalBody(Transform parent, CharacterController characterController)
+        public void SetupPhysicalBody(CharacterController characterController)
         {
-            transform.SetParent(parent, false);
-            
             characterController.height = height;
             characterController.radius = radius;
             characterController.center = new Vector3(0f, height * 0.5f, 0f);
