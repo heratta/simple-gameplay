@@ -223,9 +223,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328968382b4ac42c7bed48601fe186a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraLayer: 3
+  cameraLayer: 1
   canvas: {fileID: 4196275952731585731}
   button: {fileID: 4196275953332240397}
+  dialogPrefab: {fileID: 6076305617550097439, guid: 32277056fa493446ebc594d4e82d3088, type: 3}
 --- !u!1 &4196275953332240399
 GameObject:
   m_ObjectHideFlags: 0
