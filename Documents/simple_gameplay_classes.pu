@@ -1,0 +1,400 @@
+@startuml simple-gameplay-classes
+
+title Simple Gameplay Classes
+
+skinparam BackgroundColor Ivory
+
+namespace Helab {
+    namespace Input {
+        class InputSource {
+            Vector3Inputs
+            FloatInputs
+            BoolInputs
+        }
+
+        class InputValues {
+            valueDict
+        }
+
+        class UserInput {
+            axisBinders
+            buttonBinders
+        }
+
+        InputSource -- InputValues
+
+        UserInput -- UserInputAxisBinder
+        UserInput -- UserInputButtonBinder
+    }
+
+    namespace Camera {
+        enum CameraLayer
+
+        abstract AbstractCamera {
+            cameraLayer
+            depth
+            unityCamera
+        }
+
+        class GameplayCamera {
+            param
+        }
+
+        class GameplayCameraParam {
+            posture
+            inputSource
+            followTarget
+            player
+        }
+
+        AbstractCamera -- CameraLayer
+        AbstractCamera <|-- GameplayCamera
+        AbstractCamera <|-- UICamera
+
+        GameplayCamera -- GameplayCameraParam
+
+        GameplayCameraParam -- Helab.Input.InputSource
+    }
+
+    namespace Management {
+        class LoadManagementScene {
+            worldManagement
+        }
+
+        class WorldManagement {
+            worldDatabase
+            worldSpawner
+            worldProvisioner
+            worldSweeper
+            worldUpdater
+            gameplayContext
+        }
+
+        class WorldRoot {
+            cameraRoot
+            lightRoot
+            inputRoot
+            controllerRoot
+            uiRoot
+            stageRoot
+            characterRoot
+        }
+
+        class WorldDatabase {
+            worldRoot
+            lights
+            userInputs
+            controllers
+            widgets
+            cameraGroup
+            entityGroup
+            playerGroup
+        }
+
+        class WorldSpawner {
+            poolVault
+            resourceVault
+            instances
+        }
+
+        class WorldProvisioner {
+            worldSpawner
+            cameraGroup
+            gameplayContext
+            components
+            componentsInReady
+            provisioningCount
+        }
+
+        class WorldSweeper {
+            instances
+            instancesInKeep
+            instancesInPickup
+        }
+
+        class WorldUpdater {
+        }
+
+        class WorldInstance {
+            key
+            gameObject
+            component
+            pool
+        }
+
+        namespace Group {
+            class CameraGroup {
+                cameras
+            }
+
+            class EntityGroup {
+                entities
+            }
+
+            class PlayerGroup {
+                players
+            }
+        }
+
+        namespace Context {
+            class GameplayContext {
+                userInput
+                gameplayCamera
+                playerGroup
+            }
+
+            GameplayContext -- Helab.Input.UserInput
+            GameplayContext -- Helab.Camera.GameplayCamera
+            GameplayContext -- Helab.Management.Group.PlayerGroup
+        }
+
+        WorldManagement -- WorldDatabase
+        WorldManagement -- WorldSpawner
+        WorldManagement -- WorldProvisioner
+        WorldManagement -- WorldSweeper
+        WorldManagement -- WorldUpdater
+        WorldManagement -- LoadManagementScene
+        WorldManagement -- Helab.Management.Context.GameplayContext
+
+        WorldDatabase -- WorldRoot
+        WorldDatabase -- Helab.Management.Group.CameraGroup
+        WorldDatabase -- Helab.Management.Group.EntityGroup
+        WorldDatabase -- Helab.Management.Group.PlayerGroup
+
+        WorldSpawner -- WorldInstance
+
+        WorldProvisioner -- WorldSpawner
+        WorldProvisioner -- Helab.Management.Group.CameraGroup
+        WorldProvisioner -- Helab.Management.Context.GameplayContext
+
+        WorldSweeper -- WorldInstance
+    }
+
+    namespace ObjectPool {
+        class PoolVault {
+            pools
+        }
+
+        class GameObjectPool {
+            pool
+            prefab
+            parent
+            activeDict
+        }
+
+        PoolVault -- GameObjectPool
+        PoolVault -- Helab.Management.WorldSpawner
+    }
+
+    namespace Resource {
+        class ResourceVault {
+            characterPrefabs
+        }
+
+        class CharacterPrefabSet {
+            id
+            entity
+            physicalBody
+            viewBody
+            viewAnimation
+        }
+
+        ResourceVault -- CharacterPrefabSet
+        ResourceVault -- Helab.Management.WorldSpawner
+    }
+
+    namespace Configure {
+        class WorldConfigure {
+            worldManagement
+            makes
+        }
+
+        class Make {
+            tasks
+        }
+
+        abstract AbstractTask {
+            worldSpawner
+        }
+
+        WorldConfigure -- Helab.Management.WorldManagement
+        WorldConfigure -- Make
+
+        Make -- AbstractTask
+
+        AbstractTask -- Helab.Management.WorldSpawner
+        AbstractTask <|-- SpawnCamera
+        AbstractTask <|-- SpawnLight
+        AbstractTask <|-- SpawnWidget
+        AbstractTask <|-- SpawnStage
+        AbstractTask <|-- SpawnCharacter
+    }
+
+    namespace Controller {
+        abstract AbstractController {
+            gameplayContext
+        }
+
+        AbstractController -- Helab.Management.Context.GameplayContext
+        AbstractController <|-- GameplayController
+        AbstractController <|-- CameraController
+        AbstractController <|-- PlayerController
+        AbstractController <|-- PlayerSwitchController
+    }
+
+    namespace Entity {
+        abstract AbstractEntity {
+            logic
+            view
+            environs
+            basicParam
+        }
+
+        class EntityLogic {
+            modular
+            applier
+            movement
+        }
+
+        class EntityModular {
+            modules
+        }
+
+        abstract AbstractModule {
+
+        }
+
+        class EntityApplier {
+            applies
+        }
+
+        abstract AbstractApply {
+
+        }
+
+        class EntityMovement {
+            kineticEnergies
+            param
+        }
+
+        abstract AbstractKineticEnergy {
+
+        }
+
+        class EntityView {
+            viewBody
+            viewAnimation
+            environs
+        }
+
+        class EntityAnimation {
+            environs
+            playableAnimator
+        }
+
+        class EntityEnvirons {
+            states
+        }
+
+        abstract AbstractState {
+
+        }
+
+        class EntityBasicParam {
+            isDead
+            lifeTime
+            deltaMovement
+            viewDirection
+            isExpiredLife
+        }
+
+        class CharacterEntity {
+            reference
+            inputSource
+            characterController
+        }
+
+        class CharacterReference {
+            physicalBody
+        }
+
+        class CharacterPhysicalBody {
+            height
+            radius
+            look
+            shot
+        }
+
+        class CharacterInstruction {
+            id
+            isPlayable
+            name
+            position
+            prefabSet
+        }
+
+        AbstractEntity -- EntityLogic
+        AbstractEntity -- EntityView
+        AbstractEntity -- EntityEnvirons
+        AbstractEntity -- EntityBasicParam
+        AbstractEntity <|-- CharacterEntity
+        AbstractEntity <|-- StageEntity
+
+        EntityLogic -- EntityModular
+        EntityLogic -- EntityApplier
+        EntityLogic -- EntityMovement
+
+        EntityModular -- AbstractModule
+
+        AbstractModule <|-- GravityModule
+        AbstractModule <|-- ThrustModule
+        AbstractModule <|-- TurnAroundModule
+
+        EntityApplier -- AbstractApply
+
+        AbstractApply <|-- ApplyGravity
+        AbstractApply <|-- ApplyThrust
+        AbstractApply <|-- ApplyLook
+
+        EntityMovement -- AbstractKineticEnergy
+        EntityMovement -- EntityBasicParam
+
+        AbstractKineticEnergy <|-- GravityEnergy
+        AbstractKineticEnergy <|-- ThrustEnergy
+
+        EntityView -- EntityAnimation
+
+        EntityAnimation -- EntityEnvirons
+
+        EntityEnvirons -- AbstractState
+
+        AbstractState <|-- GravityState
+        AbstractState <|-- ThrustState
+        AbstractState <|-- LookState
+
+        CharacterEntity -- CharacterReference
+        CharacterEntity -- Helab.Input.InputSource
+        CharacterEntity -- CharacterInstruction
+
+        CharacterReference -- CharacterPhysicalBody
+    }
+
+    namespace UI {
+        abstract AbstractWidget {
+            cameraLayer
+            canvas
+        }
+
+        AbstractWidget -- Helab.Camera.CameraLayer
+    }
+
+    Helab.Management.WorldDatabase -- Helab.Input.UserInput
+    Helab.Management.WorldDatabase -- Helab.Controller.AbstractController
+    Helab.Management.WorldDatabase -- Helab.UI.AbstractWidget
+
+    Helab.Management.Group.PlayerGroup -- Helab.Entity.AbstractEntity
+    Helab.Management.Group.EntityGroup -- Helab.Entity.AbstractEntity
+    Helab.Management.Group.CameraGroup -- Helab.Camera.AbstractCamera
+}
+
+@enduml
