@@ -29,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4196275953332240398}
   m_Father: {fileID: 4196275953054221245}
@@ -128,6 +129,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4196275953332240398}
   m_RootOrder: 0
@@ -178,7 +180,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Simple Button
+  m_Text: Open Dialog
 --- !u!1 &4196275953054221247
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,6 +208,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4196275952731585728}
   m_Father: {fileID: 0}
@@ -225,8 +228,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraLayer: 1
   canvas: {fileID: 4196275952731585731}
+  canvasGroup: {fileID: 0}
+  content: {fileID: 0}
+  widgetAnimation: {fileID: 0}
   button: {fileID: 4196275953332240397}
-  dialogPrefab: {fileID: 6076305617550097439, guid: 32277056fa493446ebc594d4e82d3088, type: 3}
+  dialogPrefab: {fileID: 182958181226165797, guid: 32277056fa493446ebc594d4e82d3088, type: 3}
 --- !u!1 &4196275953332240399
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +262,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4196275952800109141}
   m_Father: {fileID: 4196275952731585728}
