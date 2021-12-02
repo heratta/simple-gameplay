@@ -10,13 +10,13 @@ namespace Helab.Entity.View
         
         public PlayableAnimator playableAnimator;
         
-        private string _currentAssetName;
+        public string CurrentAssetName { get; private set; }
 
         public void ResetAnimation()
         {
             environs = null;
             playableAnimator = null;
-            _currentAssetName = "";
+            CurrentAssetName = "";
             ResetProperty();
         }
         
@@ -42,14 +42,14 @@ namespace Helab.Entity.View
                 return;
             }
             
-            if (_currentAssetName == assetName)
+            if (CurrentAssetName == assetName)
             {
                 return;
             }
 
             if (playableAnimator.SetAnimation(assetName, isBlend))
             {
-                _currentAssetName = assetName;
+                CurrentAssetName = assetName;
             }
         }
     }

@@ -7,6 +7,7 @@ using Helab.Input;
 using Helab.ObjectPool;
 using Helab.Resource;
 using Helab.UI;
+using Helab.UI.Dialog;
 using UnityEngine;
 
 namespace Helab.Management
@@ -48,10 +49,17 @@ namespace Helab.Management
         {
             GetOrInstantiate(prefab);
         }
-
+        
         public void SpawnWidget(AbstractWidget prefab)
         {
             GetOrInstantiate(prefab);
+        }
+
+        public void SpawnDialog(DialogInstruction instruction)
+        {
+            var dialog = instruction.UsePool ?
+                GetOrBorrow(instruction.Prefab, 10) : GetOrInstantiate(instruction.Prefab);
+            dialog.Setting = instruction.Setting;
         }
         
         public void SpawnStage(StageEntity entityPrefab, GameObject viewBodyPrefab, string entityName)

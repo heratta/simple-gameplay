@@ -58,7 +58,7 @@ namespace Helab.Animation
         
         public AnimationMixerPlayable CreateMixerPlayable(int inputCount)
         {
-            return AnimationMixerPlayable.Create(_playableGraph, inputCount, true);
+            return AnimationMixerPlayable.Create(_playableGraph, inputCount);
         }
         
         public AnimationClipPlayable CreateClipPlayable(AnimationClip clip)

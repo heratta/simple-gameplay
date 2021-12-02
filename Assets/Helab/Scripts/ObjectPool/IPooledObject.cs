@@ -2,6 +2,6 @@ namespace Helab.ObjectPool
 {
     public interface IPooledObject
     {
-        void ResetInternalState();
+        void ResetPooledObject();
     }
 }

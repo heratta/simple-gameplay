@@ -13,16 +13,13 @@ namespace Helab.Entity.Character
         
         [SerializeField] private CharacterController characterController;
 
-        protected override void ResetEntity()
+        protected override void ResetEntityInternal()
         {
-            base.ResetEntity();
             reference.ResetReference();
         }
 
-        public override void SetupEntity()
+        protected override void SetupEntityInternal()
         {
-            base.SetupEntity();
-            
             reference.physicalBody.SetupPhysicalBody(characterController);
         }
 

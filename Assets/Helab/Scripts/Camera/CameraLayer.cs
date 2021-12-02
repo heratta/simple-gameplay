@@ -6,6 +6,7 @@ namespace Helab.Camera
         BackUI,
         World3D,
         ForeUI,
+        ModalUI,
         Foreground,
     }
 }

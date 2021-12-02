@@ -86,9 +86,9 @@ namespace Helab.Management
                 
                 if (instance.Pool != null)
                 {
-                    if (instance.Component is IPooledObject pooled)
+                    if (instance.Component is IPooledObject pooledObject)
                     {
-                        pooled.ResetInternalState();
+                        pooledObject.ResetPooledObject();
                     }
                     instance.Pool.ReleaseObject(instance.GameObject);
                 }

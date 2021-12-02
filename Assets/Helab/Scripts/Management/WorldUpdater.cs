@@ -45,6 +45,14 @@ namespace Helab.Management
                     worldSweeper.Pickup(entity);
                 }
             }
+
+            foreach (var widget in worldDatabase.widgets)
+            {
+                if (widget.IsClosed)
+                {
+                    worldSweeper.Pickup(widget);
+                }
+            }
         }
     }
 }

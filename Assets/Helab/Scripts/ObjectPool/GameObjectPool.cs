@@ -38,12 +38,6 @@ namespace Helab.ObjectPool
         {
             return _pool.Get();
         }
-
-        public T GetObject<T>()
-        {
-            var go = GetObject();
-            return go.GetComponent<T>();
-        }
         
         public void ReleaseObject(GameObject go)
         {

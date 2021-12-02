@@ -35,12 +35,14 @@ namespace Helab.Configure
         {
             yield return new WaitUntil(() => _worldManagement != null);
 
-            _worldManagement.OnStartConfigure();
+            _worldManagement.CleanupInWorld();
+            yield return new WaitUntil(() => _worldManagement.worldSweeper.InstanceCount <= 0);
             
 #if UNITY_EDITOR
             yield return null;
             _worldManagement.worldDatabase.worldRoot.DumpChildCount();
 #endif
+            _worldManagement.OnStartConfigure();
             
             foreach (var make in makes)
             {
@@ -49,7 +51,6 @@ namespace Helab.Configure
 
             yield return new WaitUntil(IsCompletedMake);
             
-            OnDidCompleteConfigure(_worldManagement);
             _worldManagement.OnDidCompleteConfigure();
             
             gameObject.SetActive(false);
@@ -58,11 +59,6 @@ namespace Helab.Configure
         private bool IsCompletedMake()
         {
             return makes.All(make => make.IsCompleted);
-        }
-
-        protected virtual void OnDidCompleteConfigure(WorldManagement worldManagement)
-        {
-            
         }
     }
 }

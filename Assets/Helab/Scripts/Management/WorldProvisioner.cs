@@ -91,7 +91,7 @@ namespace Helab.Management
 
         private void ProvisionEntity(AbstractEntity entity)
         {
-            entity.SetupEntity();
+            entity.SetupEntity(worldSpawner);
             FinishProvisioning(entity);
         }
 
@@ -102,7 +102,7 @@ namespace Helab.Management
                 var uiCamera = cameraGroup.FindCamera(widget.cameraLayer);
                 if (uiCamera != null)
                 {
-                    widget.SetupWidget(uiCamera);
+                    widget.SetupWidget(worldSpawner, uiCamera);
                     FinishProvisioning(widget);
                     break;
                 }
