@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraLayer: 4
-  depth: 5
+  depth: 10
   unityCamera: {fileID: 1264179043230816961}
 --- !u!1 &3622545818457392642
 GameObject:
